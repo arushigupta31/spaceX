@@ -1,21 +1,21 @@
-import React, { useEffect, useState, useContext, createContext } from 'react'
+import React, { useContext, createContext } from 'react'
 import { useAuth0 } from "@auth0/auth0-react";
-// import Header from './Header';
-// import history from './history';
-import RocketDetails from './RocketDetails';
-import { useHistory, withRouter ,Link , Redirect} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {RocketData} from '../App';
+import { ItemDataContext } from "../context/ItemDataContext";
+
 
 const ItemData=createContext()
-const Dashboard = (props) => {
-    const { user, isAuthenticated } = useAuth0();
-    const history= useHistory();
+const Dashboard = () => {
+    const { isAuthenticated } = useAuth0();
     const rdata=useContext(RocketData);
+    const ItemDataFromContext = useContext(ItemDataContext);
+    const history= useHistory();
+    console.log(ItemDataFromContext)
 
     const handleClick=(item)=>{
-        // console.log(item)
-        history.push("/rocketDetails", {item});
-        // <RocketDetails item={item}/>
+        ItemDataFromContext.setItemList(item);
+        history.push("/rocketDetails");
     }
     return (
         isAuthenticated && (
@@ -23,7 +23,6 @@ const Dashboard = (props) => {
             <div>
                 <div className="rocketDiv">
                     {rdata && rdata.map((item)=>(
-                        <ItemData.Provider value={item}>
                         <div className="rocketsCard" onClick={()=>handleClick(item)}>
                             <ul className="rocketBlock">
                                 <li className="rocketDetails"><center><a><img src={item.flickr_images[0]}/></a></center></li>
@@ -31,7 +30,6 @@ const Dashboard = (props) => {
                                 <li className="rocketDetails">{item.description}</li>
                             </ul>
                         </div>
-                    </ItemData.Provider>
                     ))} 
                 </div>
             </div>

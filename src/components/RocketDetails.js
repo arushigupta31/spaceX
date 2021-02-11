@@ -1,23 +1,17 @@
-import React, { useEffect, useState , useContext} from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
-import { ItemData } from './Dashboard';
+import React, { useContext} from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
-import JSONPretty from 'react-json-pretty';
-import Header from './Header';
-import {RocketData} from '../App';
+import { ItemDataContext } from "../context/ItemDataContext";
 
-const RocketDetails = (props) => {
+
+const RocketDetails = () => {
+
     const { isAuthenticated } = useAuth0();
-    console.log(ItemData)
-    const idata= useContext(ItemData)
-    console.log(ItemData)
-    const data= props.location.state.item;
-    console.log(idata);
+    const ItemDataFromContext = useContext(ItemDataContext);
 
     return (
         isAuthenticated && (
         <div>
-            {JSON.stringify(data)}
+            {JSON.stringify(ItemDataFromContext)}
       </div>
         )
     )
